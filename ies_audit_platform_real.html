@@ -1,0 +1,624 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c14;--bg2:#0d1520;--bg3:#111c2e;
+  --blue:#00aaff;--cyan:#00e5ff;--green:#00ff88;
+  --amber:#ffb300;--red:#ff3d3d;--purple:#9d4edd;--pink:#d4537e;
+  --text:#c8d8f0;--muted:#5a7a9a;
+  --border:rgba(0,170,255,0.15);--border2:rgba(0,170,255,0.3);
+  --mono:'Share Tech Mono',monospace;--main:'Exo 2',sans-serif;
+}
+.app{background:var(--bg);color:var(--text);font-family:var(--main);min-height:600px}
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border2);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hdr-logo{display:flex;align-items:center;gap:10px}
+.logo-box{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--cyan));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.logo-t{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:2px}
+.logo-s{font-size:10px;color:var(--muted);letter-spacing:0.5px;margin-top:1px}
+.hdr-r{display:flex;align-items:center;gap:16px}
+.live{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+#clk{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.navtabs{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;display:flex;gap:0;overflow-x:auto}
+.tb{padding:10px 16px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:var(--main);font-size:11px;font-weight:500;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all .2s;text-transform:uppercase}
+.tb:hover{color:var(--text)}
+.tb.on{color:var(--cyan);border-bottom-color:var(--cyan)}
+.main{padding:20px}
+.tc{display:none}.tc.on{display:block}
+.sec{font-family:var(--mono);font-size:10px;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sec::after{content:'';flex:1;height:1px;background:var(--border)}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent);opacity:.3}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center}
+.stat-v{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--cyan);line-height:1}
+.stat-l{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:5px}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:10px;font-family:var(--mono)}
+.ok{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.2)}
+.warn{background:rgba(255,179,0,.1);color:var(--amber);border:1px solid rgba(255,179,0,.2)}
+.err{background:rgba(255,61,61,.1);color:var(--red);border:1px solid rgba(255,61,61,.2)}
+.info{background:rgba(0,170,255,.1);color:var(--blue);border:1px solid rgba(0,170,255,.2)}
+.nc{background:rgba(90,122,154,.1);color:var(--muted);border:1px solid rgba(90,122,154,.2)}
+.fl-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.fl-tb{padding:5px 14px;border-radius:20px;border:1px solid var(--border2);background:none;color:var(--muted);font-family:var(--main);font-size:11px;cursor:pointer;transition:all .2s}
+.fl-tb.on{background:rgba(0,170,255,.1);color:var(--cyan);border-color:var(--cyan)}
+.fl-tb:hover{color:var(--text)}
+.plant-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.room{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;cursor:pointer;transition:all .2s}
+.room:hover{border-color:var(--blue);transform:translateY(-1px)}
+.room.sel{border-color:var(--cyan);background:rgba(0,229,255,.05)}
+.room-id{font-family:var(--mono);font-size:13px;color:var(--cyan);font-weight:600}
+.room-name{font-size:10px;color:var(--muted);margin:2px 0 8px;text-transform:uppercase;letter-spacing:.5px;line-height:1.2}
+.room-row{display:flex;justify-content:space-between;align-items:center;font-size:10px;margin-top:3px}
+.room-lbl{color:var(--muted)}
+.dt{width:100%;border-collapse:collapse;font-size:12px}
+.dt th{text-align:left;padding:7px 10px;font-family:var(--mono);font-size:10px;color:var(--cyan);letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--border2);background:rgba(0,170,255,.04)}
+.dt td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle}
+.dt tr:hover td{background:rgba(0,170,255,.02)}
+.fml{font-size:10px;font-family:var(--mono);color:var(--muted)}
+.fl-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;display:block}
+.fi{width:100%;background:var(--bg);border:1px solid var(--border2);border-radius:6px;padding:7px 10px;color:var(--text);font-family:var(--main);font-size:12px;outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--cyan)}
+select.fi option{background:var(--bg2)}
+textarea.fi{resize:vertical;min-height:60px;line-height:1.5}
+.btn{padding:7px 18px;border-radius:6px;font-family:var(--main);font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border:none;transition:all .2s}
+.btn-p{background:linear-gradient(135deg,#005fa8,#0088cc);color:#fff;border:1px solid rgba(0,170,255,.4)}
+.btn-p:hover{background:linear-gradient(135deg,#0070c0,#00aaff)}
+.btn-g{background:transparent;color:var(--cyan);border:1px solid var(--border2)}
+.btn-g:hover{background:rgba(0,170,255,.06)}
+.btn-sm{padding:4px 12px;font-size:10px}
+.log-e{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start}
+.log-t{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:72px;padding-top:1px}
+.log-d{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.log-c{flex:1;font-size:12px;line-height:1.5}
+.log-w{font-size:10px;color:var(--muted);margin-top:1px;font-family:var(--mono)}
+.net-wrap{background:var(--bg);border-radius:8px;border:1px solid var(--border);padding:14px;overflow-x:auto;margin-bottom:16px}
+.leg-r{display:flex;align-items:center;gap:8px;padding:5px 0;font-size:11px;border-bottom:1px solid rgba(255,255,255,.04)}
+.leg-l{width:36px;height:2px;flex-shrink:0;border-radius:2px}
+.modal-wrap{display:none;position:absolute;top:0;left:0;right:0;min-height:100%;background:rgba(0,0,0,.85);z-index:50;align-items:flex-start;justify-content:center;padding:40px 20px}
+.modal-wrap.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:24px;width:100%;max-width:520px;position:relative}
+.modal-title{font-family:var(--mono);font-size:13px;color:var(--cyan);letter-spacing:2px;margin-bottom:18px;text-transform:uppercase}
+.mcls{position:absolute;top:14px;right:14px;background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;font-family:var(--mono);padding:3px 7px;border-radius:4px;transition:color .2s}
+.mcls:hover{color:var(--text)}
+.fgrp{margin-bottom:13px}
+.note-box{background:rgba(0,170,255,.05);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:11px;line-height:1.7;color:var(--text);margin-bottom:14px}
+.note-box strong{color:var(--cyan)}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+.scan{position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.4),transparent);animation:scan 8s linear infinite;pointer-events:none}
+@keyframes scan{0%{top:0;opacity:0}5%{opacity:1}95%{opacity:.5}100%{top:100%;opacity:0}}
+</style>
+
+<div class="app" id="approot" style="position:relative">
+<div class="scan"></div>
+
+<div class="hdr">
+  <div class="hdr-logo">
+    <div class="logo-box">⬡</div>
+    <div>
+      <div class="logo-t">IES · SISTEMA DE AUDITORÍA IT</div>
+      <div class="logo-s">Inventario tecnológico de aulas · Comunidad de Madrid</div>
+    </div>
+  </div>
+  <div class="hdr-r">
+    <div class="live"><div class="dot"></div>EN LÍNEA</div>
+    <div id="clk"></div>
+  </div>
+</div>
+
+<div class="navtabs">
+  <button class="tb on" onclick="switchTab('overview',this)">◈ General</button>
+  <button class="tb" onclick="switchTab('network',this)">◎ Red</button>
+  <button class="tb" onclick="switchTab('plantas',this)">◫ Planos</button>
+  <button class="tb" onclick="switchTab('inventario',this)">⊞ Inventario</button>
+  <button class="tb" onclick="switchTab('log',this)">◷ Auditoría</button>
+</div>
+
+<div class="main" style="position:relative">
+
+<!-- MODAL -->
+<div class="modal-wrap" id="mwrap">
+  <div class="modal">
+    <button class="mcls" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="mtitle">Registrar Aula</div>
+    <div class="g2">
+      <div class="fgrp"><label class="fl-label">Código / ID</label><input class="fi" id="f-id" placeholder="P0·4, A1·13, P2·8..."></div>
+      <div class="fgrp"><label class="fl-label">Nombre del Espacio</label><input class="fi" id="f-name" placeholder="E4A, Lab. Idiomas..."></div>
+    </div>
+    <div class="g2">
+      <div class="fgrp"><label class="fl-label">Planta</label>
+        <select class="fi" id="f-planta">
+          <option value="PB">Planta Baja</option>
+          <option value="P1">Primera Planta</option>
+          <option value="P2">Segunda Planta</option>
+        </select>
+      </div>
+      <div class="fgrp"><label class="fl-label">Estado General</label>
+        <select class="fi" id="f-estado">
+          <option value="ok">Operativo</option>
+          <option value="warn">Con alertas</option>
+          <option value="err">Crítico</option>
+          <option value="nc">Sin datos</option>
+        </select>
+      </div>
+    </div>
+    <div class="fgrp"><label class="fl-label">PC Profesor — Marca / Modelo</label><input class="fi" id="f-pc" placeholder="HP EliteDesk 800 G5, Dell OptiPlex..."></div>
+    <div class="g2">
+      <div class="fgrp"><label class="fl-label">Arranque PC</label>
+        <select class="fi" id="f-arr">
+          <option value="fluido">Fluido (&lt;30s)</option>
+          <option value="lento">Lento (30-120s)</option>
+          <option value="muyLento">Muy lento (&gt;120s)</option>
+          <option value="fallo">Con fallos</option>
+          <option value="nc">Sin comprobar</option>
+        </select>
+      </div>
+      <div class="fgrp"><label class="fl-label">Tipo Conexión iBoard</label>
+        <select class="fi" id="f-conn">
+          <option value="hdmi2">HDMI 2.0</option>
+          <option value="hdmi1">HDMI 1.4</option>
+          <option value="vga">VGA (legacy)</option>
+          <option value="usbc">USB-C</option>
+          <option value="nc">Sin determinar</option>
+        </select>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="fgrp"><label class="fl-label">Estado iBoard iiyama</label>
+        <select class="fi" id="f-iboard">
+          <option value="ok">Operativa y calibrada</option>
+          <option value="calib">Requiere calibración</option>
+          <option value="fw">Firmware desact.</option>
+          <option value="fallo">Sin señal / inop.</option>
+          <option value="nc">Sin revisar</option>
+        </select>
+      </div>
+      <div class="fgrp"><label class="fl-label">Estado Cable (HDMI/VGA)</label>
+        <select class="fi" id="f-cable">
+          <option value="ok">Sin daños — estable</option>
+          <option value="inter">Señal intermitente</option>
+          <option value="danado">Cable dañado</option>
+          <option value="falta">Ausente</option>
+          <option value="nc">Sin revisar</option>
+        </select>
+      </div>
+    </div>
+    <div class="fgrp"><label class="fl-label">Observaciones / Incidencias</label><textarea class="fi" id="f-obs" placeholder="Describir cualquier incidencia, acción recomendada o nota técnica..."></textarea></div>
+    <div class="fgrp"><label class="fl-label">Inspector (tu nombre)</label><input class="fi" id="f-insp" placeholder="Nombre del técnico o docente inspector"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+      <button class="btn btn-g btn-sm" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-p btn-sm" onclick="saveRoom()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB: GENERAL ═══ -->
+<div id="tc-overview" class="tc on">
+  <div class="sec">Estado Global del Instituto</div>
+  <div class="g4" style="margin-bottom:16px">
+    <div class="stat"><div class="stat-v" id="s-total">0</div><div class="stat-l">Espacios Totales</div></div>
+    <div class="stat"><div class="stat-v" style="color:var(--green)" id="s-ok">0</div><div class="stat-l">Operativos</div></div>
+    <div class="stat"><div class="stat-v" style="color:var(--amber)" id="s-warn">0</div><div class="stat-l">Con Alertas</div></div>
+    <div class="stat"><div class="stat-v" style="color:var(--red)" id="s-err">0</div><div class="stat-l">Críticos</div></div>
+  </div>
+  <div class="g2" style="margin-bottom:14px">
+    <div class="card">
+      <div class="sec" style="font-size:9px;margin-bottom:10px">Resumen por Planta</div>
+      <table class="dt"><thead><tr><th>Planta</th><th>Espacios</th><th>OK</th><th>Alertas</th><th>Sin datos</th></tr></thead>
+      <tbody id="plant-summary"></tbody></table>
+    </div>
+    <div class="card">
+      <div class="sec" style="font-size:9px;margin-bottom:10px">Últimas Incidencias</div>
+      <div id="ov-alerts"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div class="sec" style="margin-bottom:0;flex:1">Vista Rápida — Todos los Espacios</div>
+    </div>
+    <div class="plant-grid" id="ov-grid"></div>
+  </div>
+</div>
+
+<!-- ═══ TAB: RED ═══ -->
+<div id="tc-network" class="tc">
+  <div class="sec">Arquitectura de Red — Servidor Central → iBoards</div>
+  <div class="note-box" style="margin-bottom:14px">
+    El servidor central (Sala Técnica, Planta Baja) distribuye por <strong>UTP Cat6</strong> a tres armarios de planta. Cada armario alberga un <strong>switch gestionado 24 puertos</strong> que alimenta las rosetas RJ45 de cada aula. El PC del profesor recibe datos por Ethernet y transmite vídeo/audio a la <strong>iBoard iiyama</strong> (dotación Comunidad de Madrid) por <strong>HDMI 2.0</strong>. Las iBoard disponen además de su propio puerto RJ45 para control remoto y actualización de firmware.
+  </div>
+  <div class="net-wrap">
+    <svg width="100%" viewBox="0 0 680 620" role="img">
+      <title>Arquitectura de red IES — servidor a iBoards por planta</title>
+      <desc>Diagrama técnico completo de la infraestructura de red del instituto desde el servidor hasta las pantallas iBoard iiyama</desc>
+      <defs>
+        <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#00aaff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        <marker id="am" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#ffb300" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+      </defs>
+      <!-- SERVIDOR -->
+      <rect x="215" y="18" width="250" height="52" rx="10" fill="rgba(0,100,160,.18)" stroke="#00aaff" stroke-width="1"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="13" fill="#00e5ff" x="340" y="41" text-anchor="middle" font-weight="600">SERVIDOR CENTRAL</text>
+      <text font-family="'Exo 2',sans-serif" font-size="10" fill="#5a7a9a" x="340" y="58" text-anchor="middle">Sala Técnica · Planta Baja · Windows Server</text>
+      <!-- Server → Patch -->
+      <line x1="340" y1="70" x2="340" y2="104" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#3a6080" x="348" y="90">UTP Cat6 troncal</text>
+      <!-- PATCH PANEL -->
+      <rect x="195" y="104" width="290" height="40" rx="7" fill="rgba(0,70,120,.14)" stroke="#005fa8" stroke-width=".7"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="11" fill="#00aaff" x="340" y="121" text-anchor="middle">PATCH PANEL · RACK PRINCIPAL</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#5a7a9a" x="340" y="136" text-anchor="middle">Armario 19" · Sala Técnica · PB</text>
+      <!-- Patch → 3 switches -->
+      <path d="M260 144 L130 184" fill="none" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <path d="M340 144 L340 184" fill="none" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <path d="M420 144 L550 184" fill="none" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#3a6080" x="175" y="167">Cat6 PB</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#3a6080" x="342" y="167">Cat6 P1</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#3a6080" x="480" y="167">Cat6 P2</text>
+      <!-- SWITCHES -->
+      <rect x="50" y="184" width="160" height="40" rx="7" fill="rgba(0,70,120,.12)" stroke="#004e8a" stroke-width=".7"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="10" fill="#00aaff" x="130" y="201" text-anchor="middle">SWITCH PB</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#5a7a9a" x="130" y="216" text-anchor="middle">24p Gig · Armario PB</text>
+      <rect x="260" y="184" width="160" height="40" rx="7" fill="rgba(0,70,120,.12)" stroke="#004e8a" stroke-width=".7"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="10" fill="#00aaff" x="340" y="201" text-anchor="middle">SWITCH P1</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#5a7a9a" x="340" y="216" text-anchor="middle">24p Gig · Armario 1ª</text>
+      <rect x="470" y="184" width="160" height="40" rx="7" fill="rgba(0,70,120,.12)" stroke="#004e8a" stroke-width=".7"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="10" fill="#00aaff" x="550" y="201" text-anchor="middle">SWITCH P2</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#5a7a9a" x="550" y="216" text-anchor="middle">24p Gig · Armario 2ª</text>
+      <!-- Switches → Rosetas -->
+      <line x1="130" y1="224" x2="130" y2="264" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <line x1="340" y1="224" x2="340" y2="264" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <line x1="550" y1="224" x2="550" y2="264" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#3a6080" x="138" y="247">RJ45/aula</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#3a6080" x="348" y="247">RJ45/aula</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#3a6080" x="558" y="247">RJ45/aula</text>
+      <!-- ROSETAS -->
+      <rect x="60" y="264" width="140" height="34" rx="6" fill="rgba(0,50,90,.1)" stroke="#003a6a" stroke-width=".6"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="9" fill="#4d8fbf" x="130" y="278" text-anchor="middle">ROSETA RJ45 AULA</text>
+      <text font-family="'Exo 2',sans-serif" font-size="8" fill="#3a5a74" x="130" y="291" text-anchor="middle">Caja pared / Pasillo Arroniz / Pozuelo</text>
+      <rect x="270" y="264" width="140" height="34" rx="6" fill="rgba(0,50,90,.1)" stroke="#003a6a" stroke-width=".6"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="9" fill="#4d8fbf" x="340" y="278" text-anchor="middle">ROSETA RJ45 AULA</text>
+      <text font-family="'Exo 2',sans-serif" font-size="8" fill="#3a5a74" x="340" y="291" text-anchor="middle">Canaleta / caja muro aula P1</text>
+      <rect x="480" y="264" width="140" height="34" rx="6" fill="rgba(0,50,90,.1)" stroke="#003a6a" stroke-width=".6"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="9" fill="#4d8fbf" x="550" y="278" text-anchor="middle">ROSETA RJ45 AULA</text>
+      <text font-family="'Exo 2',sans-serif" font-size="8" fill="#3a5a74" x="550" y="291" text-anchor="middle">Canaleta / caja muro aula P2</text>
+      <!-- Rosetas → PC -->
+      <line x1="130" y1="298" x2="130" y2="336" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <line x1="340" y1="298" x2="340" y2="336" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <line x1="550" y1="298" x2="550" y2="336" stroke="#00aaff" stroke-width="1.5" marker-end="url(#ab)"/>
+      <!-- PC PROFESOR -->
+      <rect x="56" y="336" width="148" height="44" rx="8" fill="rgba(0,100,70,.12)" stroke="#00704a" stroke-width=".8"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="10" fill="#00cc88" x="130" y="354" text-anchor="middle">PC PROFESOR</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#5a7a9a" x="130" y="369" text-anchor="middle">Win10/11 · HP / Dell / Lenovo</text>
+      <rect x="266" y="336" width="148" height="44" rx="8" fill="rgba(0,100,70,.12)" stroke="#00704a" stroke-width=".8"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="10" fill="#00cc88" x="340" y="354" text-anchor="middle">PC PROFESOR</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#5a7a9a" x="340" y="369" text-anchor="middle">Win10/11 · HP / Dell / Lenovo</text>
+      <rect x="476" y="336" width="148" height="44" rx="8" fill="rgba(0,100,70,.12)" stroke="#00704a" stroke-width=".8"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="10" fill="#00cc88" x="550" y="354" text-anchor="middle">PC PROFESOR</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#5a7a9a" x="550" y="369" text-anchor="middle">Win10/11 · HP / Dell / Lenovo</text>
+      <!-- PC → iBoard HDMI -->
+      <line x1="130" y1="380" x2="130" y2="418" stroke="#ffb300" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#am)"/>
+      <line x1="340" y1="380" x2="340" y2="418" stroke="#ffb300" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#am)"/>
+      <line x1="550" y1="380" x2="550" y2="418" stroke="#ffb300" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#am)"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="9" fill="#8a6000" x="138" y="402">HDMI 2.0</text>
+      <text font-family="'Share Tech Mono',monospace" font-size="9" fill="#8a6000" x="348" y="402">HDMI 2.0</text>
+      <text font-family="'Share Tech Mono',monospace" font-size="9" fill="#8a6000" x="558" y="402">HDMI 2.0</text>
+      <!-- iBOARDS -->
+      <rect x="44" y="418" width="172" height="52" rx="10" fill="rgba(80,20,130,.16)" stroke="#9d4edd" stroke-width="1"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="11" fill="#c77dff" x="130" y="438" text-anchor="middle">iBOARD iiyama</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#7a4aa0" x="130" y="452" text-anchor="middle">86" 4K Táctil · Com. Madrid</text>
+      <text font-family="'Share Tech Mono',monospace" font-size="8" fill="#5a3a7a" x="130" y="463" text-anchor="middle">HDMI IN · RJ45 · USB · USB-C</text>
+      <rect x="254" y="418" width="172" height="52" rx="10" fill="rgba(80,20,130,.16)" stroke="#9d4edd" stroke-width="1"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="11" fill="#c77dff" x="340" y="438" text-anchor="middle">iBOARD iiyama</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#7a4aa0" x="340" y="452" text-anchor="middle">86" 4K Táctil · Com. Madrid</text>
+      <text font-family="'Share Tech Mono',monospace" font-size="8" fill="#5a3a7a" x="340" y="463" text-anchor="middle">HDMI IN · RJ45 · USB · USB-C</text>
+      <rect x="464" y="418" width="172" height="52" rx="10" fill="rgba(80,20,130,.16)" stroke="#9d4edd" stroke-width="1"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="11" fill="#c77dff" x="550" y="438" text-anchor="middle">iBOARD iiyama</text>
+      <text font-family="'Exo 2',sans-serif" font-size="9" fill="#7a4aa0" x="550" y="452" text-anchor="middle">86" 4K Táctil · Com. Madrid</text>
+      <text font-family="'Share Tech Mono',monospace" font-size="8" fill="#5a3a7a" x="550" y="463" text-anchor="middle">HDMI IN · RJ45 · USB · USB-C</text>
+      <!-- Ethernet directo switch → iBoard (línea verde punteada) -->
+      <path d="M50 460 Q20 460 20 400 Q20 350 56 340" fill="none" stroke="#00ff88" stroke-width=".8" stroke-dasharray="3,3" marker-end="url(#ag)" opacity=".5"/>
+      <!-- LEGEND -->
+      <rect x="40" y="502" width="600" height="90" rx="8" fill="rgba(0,50,90,.1)" stroke="#003a6a" stroke-width=".5"/>
+      <text font-family="'Share Tech Mono',monospace" font-size="9" fill="#4d8fbf" x="56" y="520">LEYENDA</text>
+      <line x1="130" y1="536" x2="180" y2="536" stroke="#00aaff" stroke-width="2" marker-end="url(#ab)"/>
+      <text font-family="'Exo 2',sans-serif" font-size="10" fill="#5a7a9a" x="188" y="540">Ethernet UTP Cat6 (red de datos LAN)</text>
+      <line x1="130" y1="556" x2="180" y2="556" stroke="#ffb300" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#am)"/>
+      <text font-family="'Exo 2',sans-serif" font-size="10" fill="#5a7a9a" x="188" y="560">HDMI 2.0 — señal vídeo/audio PC → iBoard</text>
+      <line x1="130" y1="576" x2="180" y2="576" stroke="#00ff88" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#ag)"/>
+      <text font-family="'Exo 2',sans-serif" font-size="10" fill="#5a7a9a" x="188" y="580">Ethernet iBoard — control táctil / firmware</text>
+      <line x1="380" y1="536" x2="430" y2="536" stroke="#888" stroke-width="1.5" stroke-dasharray="3,3"/>
+      <text font-family="'Exo 2',sans-serif" font-size="10" fill="#5a7a9a" x="438" y="540">VGA — aulas legacy sin HDMI</text>
+      <text font-family="'Exo 2',sans-serif" font-size="10" fill="#5a7a9a" x="380" y="560">Switch PB: Pasillo Arroniz + Pozuelo + Aula Futuro</text>
+      <text font-family="'Exo 2',sans-serif" font-size="10" fill="#5a7a9a" x="380" y="576">Switch P1: Ala E + Ala Arte/Lab · Switch P2: Ala B</text>
+    </svg>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="sec" style="font-size:9px;margin-bottom:10px">Notas técnicas — iBoard iiyama (Com. Madrid)</div>
+      <div style="font-size:11px;line-height:1.8;color:var(--text)">
+        <div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)">· Puertos: <span style="color:var(--amber)">2×HDMI IN + 1×HDMI OUT + RJ45 + 4×USB-A + 1×USB-C</span></div>
+        <div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)">· Selección de fuente HDMI: mando a distancia o panel lateral táctil</div>
+        <div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)">· Firmware actualizable: vía red LAN (RJ45 propio) o USB</div>
+        <div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)">· Calibración táctil: botón lateral 5 seg. Recalibrar tras cambio de PC</div>
+        <div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)">· Sin señal HDMI: verificar fuente seleccionada, cable y salida GPU del PC</div>
+        <div style="padding:4px 0">· VGA: adaptador VGA→HDMI activo si el PC sólo tiene salida VGA</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec" style="font-size:9px;margin-bottom:10px">Espacios por Switch (según planos)</div>
+      <div style="font-size:11px;line-height:1.8;color:var(--text)">
+        <div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)"><span style="color:var(--cyan)">Switch PB</span> — Aula Futuro, E3A/C, E1A/B/F, Tec, Dto Ltec, Inf.Tecno, Tecnol II, Dto LC, Música, E4A/C/E, E4B, Cafetería, Plástica, Dto Plást, Bg, Orient., Aula 4ºY, Aula Sec, Consejo, Sec, Dir, J.Est</div>
+        <div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,.05)"><span style="color:var(--cyan)">Switch P1</span> — Inf.Arava, Lab.Idiomas, E1C/D/E, E2A-G, E3B/D/E/F, Dto FCO/Mat/ING/GS, Lab Quím/Fis, Arte II-A/B, BID, 4ºDiv, B1E, Sala Prof., E4D, BB (B1·3-5)</div>
+        <div style="padding:4px 0"><span style="color:var(--cyan)">Switch P2</span> — B1A-Exc, B1B/C/F, B2A-E, B2B/C/D, Dto B/FLC, Alt.Cap, Inf P02 I/II</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB: PLANOS ═══ -->
+<div id="tc-plantas" class="tc">
+  <div class="sec">Planos por Planta — Inventario Visual</div>
+  <div class="fl-tabs">
+    <button class="fl-tb on" onclick="switchFloor('PB',this)">Planta Baja</button>
+    <button class="fl-tb" onclick="switchFloor('P1',this)">Primera Planta</button>
+    <button class="fl-tb" onclick="switchFloor('P2',this)">Segunda Planta</button>
+  </div>
+  <div class="card" style="margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:11px;color:var(--muted);font-family:var(--mono)" id="floor-label">PLANTA BAJA — Pasillo Pozuelo · Pasillo Arroniz · Hall</span>
+      <button class="btn btn-p btn-sm" onclick="openNewForFloor()">+ Añadir / Editar</button>
+    </div>
+    <div class="plant-grid" id="floor-grid"></div>
+  </div>
+</div>
+
+<!-- ═══ TAB: INVENTARIO ═══ -->
+<div id="tc-inventario" class="tc">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div class="sec" style="margin-bottom:0;flex:1">Inventario Completo</div>
+    <button class="btn btn-p btn-sm" onclick="openNew()">+ Nuevo Registro</button>
+  </div>
+  <div class="card">
+    <div style="overflow-x:auto">
+    <table class="dt">
+      <thead><tr>
+        <th>Código</th><th>Nombre</th><th>Planta</th>
+        <th>PC Profesor</th><th>iBoard</th><th>Cable</th>
+        <th>Estado</th><th>Inspector</th><th></th>
+      </tr></thead>
+      <tbody id="inv-body"></tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB: AUDITORÍA ═══ -->
+<div id="tc-log" class="tc">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div class="sec" style="margin-bottom:0;flex:1">Registro de Auditoría</div>
+    <button class="btn btn-g btn-sm" onclick="exportLog()">↓ Exportar</button>
+  </div>
+  <div class="card"><div id="log-body"></div></div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+const ESTADO_LABEL={ok:'Operativo',warn:'Alertas',err:'Crítico',nc:'Sin datos'};
+const ESTADO_CLS={ok:'ok',warn:'warn',err:'err',nc:'nc'};
+const ARR_LABEL={fluido:'Fluido',lento:'Lento',muyLento:'Muy lento',fallo:'Fallos',nc:'—'};
+const IBOARD_LABEL={ok:'Calibrada',calib:'Recalib.',fw:'FW desact.',fallo:'Sin señal',nc:'—'};
+const CONN_LABEL={hdmi2:'HDMI 2.0',hdmi1:'HDMI 1.4',vga:'VGA',usbc:'USB-C',nc:'—'};
+const CABLE_LABEL={ok:'OK',inter:'Intermit.',danado:'Dañado',falta:'Ausente',nc:'—'};
+const CABLE_CLS={ok:'ok',inter:'warn',danado:'err',falta:'err',nc:'nc'};
+
+let rooms=[
+  {id:'A0·11',name:'Aula Futuro',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·9',name:'E3A',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·16',name:'E3C',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·7',name:'E1B',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·14',name:'E1F',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·5',name:'E1A',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·10',name:'Dto LC',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·3',name:'Tec',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·4',name:'Dto Ltec',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·1',name:'Inf.Tecno',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A0·2',name:'Tecnol II',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·10',name:'Música',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·8',name:'E4E',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·6',name:'E4C',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·4',name:'E4A',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·2',name:'Cafetería',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·19',name:'Plástica',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·17',name:'Aula 4ºY',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·15',name:'Bg',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·13',name:'E4B',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·11',name:'Orient.',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P0·9',name:'Aula Sec',planta:'PB',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·13',name:'Inf. Arava',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·24',name:'Lab. Idiomas',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·11',name:'E3E',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·24B',name:'Dto FCO',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·9',name:'E3D',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·14',name:'E3F',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·7',name:'E2G',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·12',name:'E2F',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·5',name:'E2E',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·10',name:'Dto Mat',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·3',name:'E1E',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·4',name:'E3B',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·1',name:'E1C',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A1·2',name:'E1D',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·12',name:'Lab Quím',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·10',name:'Lab Fis',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·8',name:'E2D',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·6',name:'E2C',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·4',name:'E2B',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·2',name:'E2A',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·19/21',name:'Arte II-B',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·19A',name:'Arte II-A',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·17',name:'BID',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·15',name:'Dto ING',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·13',name:'4ºDiv',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·11',name:'Dto GS',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P1·9',name:'B1E',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'B1·2',name:'E4D',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'B1·3',name:'BB',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'B1·4',name:'BB',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'B1·5',name:'BB',planta:'P1',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·11',name:'B2D',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·14',name:'Alt.Cap',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·9',name:'B2E',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·8',name:'B2B',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·7',name:'B1B',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·6',name:'Dto B',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·5',name:'B1C',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P2DtoFLC',name:'Dto FLC',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·1',name:'B2A',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'A2·2',name:'B2C',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P2·8',name:'Inf P02 II',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P2·4',name:'B1A-Exc',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P2·03',name:'B1F',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+  {id:'P2·1',name:'Inf P02 I',planta:'P2',estado:'nc',pc:'',arr:'nc',conn:'nc',iboard:'nc',cable:'nc',obs:'',insp:''},
+];
+
+let auditLog=[{time:'—',fecha:'Inicio',tipo:'info',msg:'Sistema cargado con datos reales de los planos del IES.',insp:'Sistema'}];
+let editIdx=null;
+let curFloor='PB';
+
+function val(id){return document.getElementById(id)?.value||'';}
+function el(id){return document.getElementById(id);}
+
+function clockTick(){
+  const d=new Date();
+  el('clk').textContent=d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'})+' · '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+setInterval(clockTick,1000);clockTick();
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  el('tc-'+id).classList.add('on');
+  if(btn)btn.classList.add('on');
+  if(id==='inventario')renderInv();
+  if(id==='log')renderLog();
+  if(id==='plantas')renderFloor(curFloor);
+  if(id==='overview')renderOverview();
+}
+
+function switchFloor(f,btn){
+  curFloor=f;
+  document.querySelectorAll('.fl-tb').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  const labels={PB:'PLANTA BAJA — Pasillo Pozuelo · Pasillo Arroniz · Hall',P1:'PRIMERA PLANTA — Ala E · Ala Arte / Laboratorios · Sala Profesores',P2:'SEGUNDA PLANTA — Ala B · Aulas de Informática'};
+  el('floor-label').textContent=labels[f];
+  renderFloor(f);
+}
+
+function roomCard(r,i){
+  const ec=ESTADO_CLS[r.estado];
+  const el_=ESTADO_LABEL[r.estado];
+  return`<div class="room ${''}" onclick="editRoom(${i})">
+    <div class="room-id">${r.id}</div>
+    <div class="room-name">${r.name}</div>
+    <div class="room-row"><span class="room-lbl">Estado</span><span class="badge ${ec}">${el_}</span></div>
+    <div class="room-row"><span class="room-lbl">iBoard</span><span style="font-size:10px;color:var(--text)">${IBOARD_LABEL[r.iboard]}</span></div>
+    <div class="room-row"><span class="room-lbl">Cable</span><span style="font-size:10px;color:var(--text)">${CABLE_LABEL[r.cable]}</span></div>
+    ${r.insp?`<div class="room-row"><span class="room-lbl">Insp.</span><span style="font-size:10px;color:var(--muted)">${r.insp}</span></div>`:''}
+  </div>`;
+}
+
+function renderFloor(f){
+  const filtered=rooms.map((r,i)=>({r,i})).filter(x=>x.r.planta===f);
+  el('floor-grid').innerHTML=filtered.length?filtered.map(x=>roomCard(x.r,x.i)).join(''):'<div style="color:var(--muted);font-size:12px;padding:20px">No hay espacios registrados para esta planta.</div>';
+}
+
+function renderOverview(){
+  updateStats();
+  const alert_rooms=rooms.filter(r=>r.estado==='err'||r.estado==='warn').slice(0,5);
+  el('ov-alerts').innerHTML=alert_rooms.length?alert_rooms.map(r=>`
+    <div class="log-e">
+      <div class="log-d" style="background:${r.estado==='err'?'var(--red)':'var(--amber)'}"></div>
+      <div class="log-c"><strong style="font-size:11px">${r.id} — ${r.name}</strong>${r.obs?': '+r.obs.slice(0,80):''}<div class="log-w">${r.insp||'Sin inspector'}</div></div>
+    </div>`).join(''):`<div style="color:var(--muted);font-size:11px;padding:8px">Sin incidencias registradas aún.</div>`;
+  const sum={PB:{t:0,ok:0,warn:0,nc:0},P1:{t:0,ok:0,warn:0,nc:0},P2:{t:0,ok:0,warn:0,nc:0}};
+  rooms.forEach(r=>{const s=sum[r.planta];if(!s)return;s.t++;if(r.estado==='ok')s.ok++;else if(r.estado==='warn'||r.estado==='err')s.warn++;else s.nc++;});
+  const flNames={PB:'Planta Baja',P1:'Primera Planta',P2:'Segunda Planta'};
+  el('plant-summary').innerHTML=Object.entries(sum).map(([k,v])=>`<tr><td style="color:var(--cyan);font-family:var(--mono);font-size:11px">${flNames[k]}</td><td>${v.t}</td><td><span class="badge ok">${v.ok}</span></td><td><span class="badge warn">${v.warn}</span></td><td><span class="badge nc">${v.nc}</span></td></tr>`).join('');
+  el('ov-grid').innerHTML=rooms.slice(0,24).map((r,i)=>roomCard(r,i)).join('');
+}
+
+function updateStats(){
+  const ok=rooms.filter(r=>r.estado==='ok').length;
+  const warn=rooms.filter(r=>r.estado==='warn').length;
+  const err=rooms.filter(r=>r.estado==='err').length;
+  el('s-total').textContent=rooms.length;
+  el('s-ok').textContent=ok;
+  el('s-warn').textContent=warn;
+  el('s-err').textContent=err;
+}
+
+function renderInv(){
+  el('inv-body').innerHTML=rooms.map((r,i)=>`<tr>
+    <td><span style="font-family:var(--mono);color:var(--cyan);font-size:11px">${r.id}</span></td>
+    <td><span style="font-size:12px">${r.name}</span></td>
+    <td><span class="fml">${{PB:'PB',P1:'P1',P2:'P2'}[r.planta]}</span></td>
+    <td><span style="font-size:11px">${r.pc||'—'}</span><br><span class="badge ${r.arr==='fallo'?'err':r.arr==='nc'?'nc':'ok'}" style="margin-top:2px;display:inline-flex">${ARR_LABEL[r.arr]}</span></td>
+    <td><span class="badge ${r.iboard==='ok'?'ok':r.iboard==='nc'?'nc':r.iboard==='fallo'?'err':'warn'}">${IBOARD_LABEL[r.iboard]}</span></td>
+    <td><span class="badge ${CABLE_CLS[r.cable]}">${CABLE_LABEL[r.cable]}</span><br><span class="fml" style="margin-top:2px;display:block">${CONN_LABEL[r.conn]}</span></td>
+    <td><span class="badge ${ESTADO_CLS[r.estado]}">${ESTADO_LABEL[r.estado]}</span></td>
+    <td><span class="fml">${r.insp||'—'}</span></td>
+    <td><button class="btn btn-g btn-sm" onclick="editRoom(${i})">Editar</button></td>
+  </tr>`).join('');
+}
+
+function renderLog(){
+  el('log-body').innerHTML=auditLog.slice().reverse().map(e=>`
+    <div class="log-e">
+      <div class="log-t">${e.fecha}<br>${e.time}</div>
+      <div class="log-d" style="background:${e.tipo==='ok'?'var(--green)':e.tipo==='warn'?'var(--amber)':e.tipo==='err'?'var(--red)':'var(--blue)'}"></div>
+      <div class="log-c">${e.msg}<div class="log-w">${e.insp}</div></div>
+    </div>`).join('');
+}
+
+function populateForm(r){
+  el('f-id').value=r.id||'';el('f-name').value=r.name||'';
+  el('f-planta').value=r.planta||'PB';el('f-estado').value=r.estado||'nc';
+  el('f-pc').value=r.pc||'';el('f-arr').value=r.arr||'nc';
+  el('f-conn').value=r.conn||'nc';el('f-iboard').value=r.iboard||'nc';
+  el('f-cable').value=r.cable||'nc';el('f-obs').value=r.obs||'';
+  el('f-insp').value=r.insp||'';
+}
+
+function openNew(){editIdx=null;el('mtitle').textContent='Registrar Nuevo Espacio';populateForm({});el('mwrap').classList.add('open');}
+function openNewForFloor(){editIdx=null;el('mtitle').textContent='Registrar Espacio — '+curFloor;populateForm({planta:curFloor});el('f-planta').value=curFloor;el('mwrap').classList.add('open');}
+function editRoom(i){editIdx=i;const r=rooms[i];el('mtitle').textContent='Editar: '+r.id+' — '+r.name;populateForm(r);el('mwrap').classList.add('open');}
+function closeModal(){el('mwrap').classList.remove('open');}
+
+function saveRoom(){
+  const insp=val('f-insp')||'Equipo IT';
+  const id=val('f-id')||'?';
+  const entry={id,name:val('f-name'),planta:val('f-planta'),estado:val('f-estado'),pc:val('f-pc'),arr:val('f-arr'),conn:val('f-conn'),iboard:val('f-iboard'),cable:val('f-cable'),obs:val('f-obs'),insp};
+  const isEdit=editIdx!==null;
+  if(isEdit){rooms[editIdx]=entry;}else{rooms.push(entry);}
+  const now=new Date();
+  const time=now.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+  const fecha=now.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'});
+  auditLog.push({time,fecha,tipo:entry.estado==='err'?'err':entry.estado==='warn'?'warn':'ok',msg:(isEdit?`${id} — datos actualizados. Estado: ${ESTADO_LABEL[entry.estado]}.`:`${id} (${entry.name}) — nuevo registro añadido.`)+(entry.obs?' Obs: '+entry.obs.slice(0,60):''),insp});
+  closeModal();
+  renderInv();renderOverview();if(el('tc-plantas').classList.contains('on'))renderFloor(curFloor);
+}
+
+function exportLog(){
+  const txt=auditLog.map(e=>`[${e.fecha} ${e.time}] [${e.tipo.toUpperCase()}] ${e.msg} — ${e.insp}`).join('\n');
+  const b=new Blob([txt],{type:'text/plain'});const u=URL.createObjectURL(b);
+  const a=document.createElement('a');a.href=u;a.download='auditoria_IES.txt';a.click();
+}
+
+renderOverview();
+</script>
